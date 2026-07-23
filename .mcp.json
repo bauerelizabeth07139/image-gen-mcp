@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "image-generation": {
+      "command": "node",
+      "args": ["scripts/server.mjs"],
+      "env": {
+        "IMAGE_GEN_BASE_URL": "${IMAGE_GEN_BASE_URL}",
+        "IMAGE_GEN_API_KEY": "${IMAGE_GEN_API_KEY}",
+        "IMAGE_GEN_DEFAULT_MODEL": "${IMAGE_GEN_DEFAULT_MODEL}",
+        "IMAGE_GEN_TIMEOUT_MS": "${IMAGE_GEN_TIMEOUT_MS}"
+      }
+    }
+  }
+}
