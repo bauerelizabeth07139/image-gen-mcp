@@ -1,0 +1,21 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256">
+  <defs>
+    <linearGradient id="bg2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0f0c29"/>
+      <stop offset="100%" style="stop-color:#302b63"/>
+    </linearGradient>
+    <linearGradient id="neon2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#4facfe"/>
+      <stop offset="100%" style="stop-color:#00f2fe"/>
+    </linearGradient>
+    <filter id="gl2"><feGaussianBlur stdDeviation="4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  </defs>
+  <rect width="256" height="256" rx="48" fill="url(#bg2)"/>
+  <g filter="url(#gl2)" opacity="0.5">
+    <ellipse cx="128" cy="128" rx="88" ry="30" fill="none" stroke="url(#neon2)" stroke-width="1.5" transform="rotate(-30 128 128)"/>
+    <ellipse cx="128" cy="128" rx="88" ry="30" fill="none" stroke="#f5576c" stroke-width="1.5" transform="rotate(30 128 128)"/>
+  </g>
+  <circle cx="128" cy="128" r="36" fill="none" stroke="url(#neon2)" stroke-width="2.5"/>
+  <circle cx="128" cy="128" r="20" fill="#4facfe" opacity="0.7"/>
+  <circle cx="128" cy="128" r="10" fill="#fff"/>
+</svg>

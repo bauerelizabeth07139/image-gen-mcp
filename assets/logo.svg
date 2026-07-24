@@ -1,0 +1,61 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0f0c29"/>
+      <stop offset="50%" style="stop-color:#302b63"/>
+      <stop offset="100%" style="stop-color:#24243e"/>
+    </linearGradient>
+    <linearGradient id="glow1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#667eea"/>
+      <stop offset="100%" style="stop-color:#764ba2"/>
+    </linearGradient>
+    <linearGradient id="glow2" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#f093fb"/>
+      <stop offset="100%" style="stop-color:#f5576c"/>
+    </linearGradient>
+    <linearGradient id="neon" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#4facfe"/>
+      <stop offset="100%" style="stop-color:#00f2fe"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="8" result="coloredBlur"/>
+      <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="glow-strong">
+      <feGaussianBlur stdDeviation="12" result="coloredBlur"/>
+      <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <!-- Background -->
+  <rect width="512" height="512" rx="96" fill="url(#bg)"/>
+  <!-- Grid lines -->
+  <g stroke="#667eea" stroke-width="0.5" opacity="0.15">
+    <line x1="0" y1="100" x2="512" y2="100"/><line x1="0" y1="200" x2="512" y2="200"/>
+    <line x1="0" y1="300" x2="512" y2="300"/><line x1="0" y1="400" x2="512" y2="400"/>
+    <line x1="100" y1="0" x2="100" y2="512"/><line x1="200" y1="0" x2="200" y2="512"/>
+    <line x1="300" y1="0" x2="300" y2="512"/><line x1="400" y1="0" x2="400" y2="512"/>
+  </g>
+  <!-- Orbiting rings -->
+  <g filter="url(#glow)" opacity="0.6">
+    <ellipse cx="256" cy="256" rx="180" ry="60" fill="none" stroke="url(#neon)" stroke-width="2" transform="rotate(-30 256 256)"/>
+    <ellipse cx="256" cy="256" rx="180" ry="60" fill="none" stroke="url(#glow2)" stroke-width="2" transform="rotate(30 256 256)"/>
+    <ellipse cx="256" cy="256" rx="180" ry="60" fill="none" stroke="url(#glow1)" stroke-width="2" transform="rotate(90 256 256)"/>
+  </g>
+  <!-- Central lens/eye -->
+  <g filter="url(#glow-strong)" transform="translate(256,256)">
+    <circle cx="0" cy="0" r="72" fill="none" stroke="url(#neon)" stroke-width="4"/>
+    <circle cx="0" cy="0" r="56" fill="none" stroke="url(#glow1)" stroke-width="3"/>
+    <circle cx="0" cy="0" r="40" fill="url(#glow2)" opacity="0.8"/>
+    <circle cx="0" cy="0" r="20" fill="#fff" opacity="0.9"/>
+    <circle cx="-8" cy="-8" r="6" fill="#fff"/>
+  </g>
+  <!-- Decorative dots -->
+  <g filter="url(#glow)" opacity="0.7">
+    <circle cx="120" cy="120" r="4" fill="#4facfe"/>
+    <circle cx="392" cy="120" r="3" fill="#f5576c"/>
+    <circle cx="120" cy="392" r="3" fill="#764ba2"/>
+    <circle cx="392" cy="392" r="4" fill="#00f2fe"/>
+    <circle cx="256" cy="80" r="3" fill="#667eea"/>
+    <circle cx="256" cy="432" r="3" fill="#f093fb"/>
+  </g>
+</svg>
