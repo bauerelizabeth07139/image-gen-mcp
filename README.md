@@ -9,6 +9,7 @@ A Codex plugin and MCP server for image generation with configurable base URL, A
 - `openai` mode auto-normalizes to the OpenAI Images API shape (`dall-e-3`, `n=1`, `b64_json`)
 - Health check, config status, and generation endpoints
 - Works as a local Codex plugin with marketplace install
+- Subagent-first workflow to keep the main planning loop lean
 
 ## Install
 

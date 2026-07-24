@@ -1,7 +1,7 @@
 ﻿interface:
   display_name: "Image Generation"
   short_description: "Generate images from text"
-  default_prompt: "Use $image-generation to generate an image from a short creative prompt."
+  default_prompt: "Use $image-generation to generate an image from a short creative prompt. Delegate image creation and artifact inspection to a subagent and keep the main planning loop light."
   icon_small: "./assets/image-generation-small.svg"
   icon_large: "./assets/logo.png"
 policy:
@@ -11,4 +11,5 @@ dependencies:
     - type: mcp
       value: image-generation
       description: Local image generation MCP server
+
 
