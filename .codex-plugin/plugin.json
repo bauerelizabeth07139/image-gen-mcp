@@ -23,11 +23,12 @@
     "termsOfServiceURL": "https://example.com/terms",
     "defaultPrompt": ["Generate an image from a short prompt"],
     "brandColor": "#111827",
-    "composerIcon": "./assets/composer-icon.svg",
-    "logo": "./assets/logo.svg",
+    "composerIcon": "./assets/composer-icon.png",
+    "logo": "./assets/logo.png",
     "screenshots": []
   }
 }
+
 
 
 
