@@ -1,4 +1,4 @@
-﻿{
+{
   "name": "image-gen-mcp",
   "version": "0.2.0",
   "description": "Subagent-first image generation plugin exposed through an MCP server with configurable base URL, API key, and modal-aware workflow.",
