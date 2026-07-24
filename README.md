@@ -1,5 +1,5 @@
 ﻿<p align="center">
-  <img src="./assets/logo.png" width="120" alt="Image Generation MCP"/>
+  <img src="./assets/logo.svg" width="120" alt="Image Generation MCP"/>
 </p>
 
 <h1 align="center">🎨 Image Generation MCP</h1>
@@ -208,3 +208,4 @@ MIT
 <p align="center">
   <sub>Built for <a href="https://github.com/openai/codex">Codex</a> · Powered by MCP</sub>
 </p>
+
