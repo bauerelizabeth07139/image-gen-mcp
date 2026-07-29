@@ -1,4 +1,4 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 import contextlib
 import io
 import json
@@ -21,6 +21,11 @@ def post_json(url: str, payload: dict) -> tuple[int, dict]:
     except urllib.error.HTTPError as exc:
         body = json.loads(exc.read().decode("utf-8"))
         return exc.code, body
+
+
+# Ensure required env vars have defaults for testing
+os.environ.setdefault("IMAGE_GEN_BASE_URL", "http://127.0.0.1:1")
+os.environ.setdefault("IMAGE_GEN_API_KEY", "test-key")
 
 
 def main() -> int:

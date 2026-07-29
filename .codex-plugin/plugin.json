@@ -1,6 +1,6 @@
 {
   "name": "image-gen-mcp",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Expose image generation tools through an MCP server with configurable base URL and API key.",
   "author": {
     "name": "Local User"

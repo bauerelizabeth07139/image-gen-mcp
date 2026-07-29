@@ -1,16 +1,16 @@
-﻿<p align="center">
+<p align="center">
   <img src="./assets/logo.svg" width="120" alt="Image Generation MCP"/>
 </p>
 
-<h1 align="center">🎨 Image Generation MCP</h1>
+<h1 align="center">?? Image Generation MCP</h1>
 
 <p align="center">
-  <strong>Configurable · Provider-Agnostic · Drop-in MCP Server</strong><br/>
+  <strong>Configurable �� Provider-Agnostic �� Drop-in MCP Server</strong><br/>
   A Codex plugin that exposes image generation tools through MCP with configurable base URL and API key.
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Version-0.2.0-blue" alt="Version"/>
+  <img src="https://img.shields.io/badge/Version-0.3.0-blue" alt="Version"/>
   <img src="https://img.shields.io/badge/License-MIT-green" alt="License"/>
   <img src="https://img.shields.io/badge/MCP-Server-orange" alt="MCP Server"/>
   <img src="https://img.shields.io/badge/Platform-Codex-black" alt="Platform"/>
@@ -18,17 +18,17 @@
 
 ---
 
-## ✨ Features
+## ? Features
 
-- 🔧 **Fully Configurable** — Set your own API endpoint and key via environment variables
-- 🔄 **Two Provider Modes** — `generic` for any compatible API, `openai` for OpenAI Images API
-- 🛠️ **Two Built-in Tools** — `image_generate` and `image_config_status`
-- 📦 **Drop-in Plugin** — Install from personal marketplace, works out of the box
-- 🎯 **Minimal Context** — Pure MCP tool layer, no planner/workflow overhead
+- ?? **Fully Configurable** �� Set your own API endpoint and key via environment variables
+- ?? **Two Provider Modes** �� `generic` for any compatible API, `openai` for OpenAI Images API
+- ??? **Two Built-in Tools** �� `image_generate` and `image_config_status`
+- ?? **Drop-in Plugin** �� Install from personal marketplace, works out of the box
+- ?? **Minimal Context** �� Pure MCP tool layer, no planner/workflow overhead
 
 ---
 
-## 🚀 Quick Start
+## ?? Quick Start
 
 ### 1. Install from Personal Marketplace
 
@@ -50,24 +50,24 @@ export IMAGE_GEN_TIMEOUT_MS="30000"         # optional
 
 Once installed, the plugin exposes these MCP tools automatically:
 
-- `image_generate` — Generate an image from a text prompt
-- `image_config_status` — Check if base URL and API key are configured
+- `image_generate` �� Generate an image from a text prompt
+- `image_config_status` �� Check if base URL and API key are configured
 
 ---
 
-## ⚙️ Configuration
+## ?? Configuration
 
 | Variable | Required | Default | Description |
 |----------|----------|---------|-------------|
-| `IMAGE_GEN_BASE_URL` | ✅ | — | Base URL of the image generation API |
-| `IMAGE_GEN_API_KEY` | ✅ | — | API key for authentication |
+| `IMAGE_GEN_BASE_URL` | ? | �� | Base URL of the image generation API |
+| `IMAGE_GEN_API_KEY` | ? | �� | API key for authentication |
 | `IMAGE_GEN_PROVIDER` | | `generic` | `generic` or `openai` |
 | `IMAGE_GEN_DEFAULT_MODEL` | | `dall-e-3` | Default model ID |
 | `IMAGE_GEN_TIMEOUT_MS` | | `30000` | Request timeout in milliseconds |
 
 ---
 
-## 🔄 Provider Modes
+## ?? Provider Modes
 
 ### `generic` (Default)
 
@@ -78,15 +78,15 @@ Forwards requests as-is to `{BASE_URL}/v1/images/generations` with your payload.
 ### `openai`
 
 Normalizes requests to the strict OpenAI Images API shape:
-- Forces `model` → `dall-e-3` (unless overridden)
-- Forces `n` → `1`
-- Forces `response_format` → `b64_json`
+- Forces `model` �� `dall-e-3` (unless overridden)
+- Forces `n` �� `1`
+- Forces `response_format` �� `b64_json`
 
 **Use when:** You're calling the real OpenAI API and need strict format compliance.
 
 ---
 
-## 🛠️ Tools Reference
+## ??? Tools Reference
 
 ### `image_generate`
 
@@ -120,62 +120,62 @@ Check whether the required configuration is in place.
 
 ---
 
-## 🏗️ Architecture
+## ??? Architecture
 
 ```
-┌─────────────────────────────────────────────┐
-│                  Codex                       │
-│                                             │
-│   User Prompt ──→ Image Generation Skill    │
-│                        │                    │
-│                        ▼                    │
-│               MCP Server (Node.js)          │
-│               scripts/server.mjs            │
-│                        │                    │
-│              ┌─────────┴─────────┐          │
-│              ▼                   ▼          │
-│       generic mode          openai mode     │
-│              │                   │          │
-│              └─────────┬─────────┘          │
-│                        ▼                    │
-│               {BASE_URL}/v1/images/         │
-│                   generations               │
-└─────────────────────────────────────────────┘
+����������������������������������������������������������������������������������������������
+��                  Codex                       ��
+��                                             ��
+��   User Prompt ������ Image Generation Skill    ��
+��                        ��                    ��
+��                        ��                    ��
+��               MCP Server (Node.js)          ��
+��               scripts/server.mjs            ��
+��                        ��                    ��
+��              ���������������������ة�������������������          ��
+��              ��                   ��          ��
+��       generic mode          openai mode     ��
+��              ��                   ��          ��
+��              ���������������������Щ�������������������          ��
+��                        ��                    ��
+��               {BASE_URL}/v1/images/         ��
+��                   generations               ��
+����������������������������������������������������������������������������������������������
 ```
 
 ---
 
-## 📁 Structure
+## ?? Structure
 
 ```
 image-gen-mcp/
-├── .codex-plugin/
-│   └── plugin.json              # Plugin manifest
-├── .mcp.json                    # MCP server config
-├── assets/
-│   ├── composer-icon.png        # Composer icon
-│   └── logo.png                 # Plugin logo
-├── skills/
-│   └── image-generation/
-│       ├── SKILL.md             # Skill instructions
-│       ├── agents/
-│       │   └── openai.yaml      # UI metadata
-│       └── assets/
-│           └── image-generation-small.svg
-├── scripts/
-│   ├── server.mjs               # Node.js MCP server
-│   ├── server.py                # Python HTTP server (testing)
-│   ├── test_server.py           # Smoke test
-│   └── validate_plugin.py       # Plugin validator
-├── tests/
-│   └── test_provider_modes.py   # Provider regression tests
-├── LICENSE
-└── README.md
+������ .codex-plugin/
+��   ������ plugin.json              # Plugin manifest
+������ .mcp.json                    # MCP server config
+������ assets/
+��   ������ composer-icon.png        # Composer icon
+��   ������ logo.png                 # Plugin logo
+������ skills/
+��   ������ image-generation/
+��       ������ SKILL.md             # Skill instructions
+��       ������ agents/
+��       ��   ������ openai.yaml      # UI metadata
+��       ������ assets/
+��           ������ image-generation-small.svg
+������ scripts/
+��   ������ server.mjs               # Node.js MCP server
+��   ������ server.py                # Python HTTP server (testing)
+��   ������ test_server.py           # Smoke test
+��   ������ validate_plugin.py       # Plugin validator
+������ tests/
+��   ������ test_provider_modes.py   # Provider regression tests
+������ LICENSE
+������ README.md
 ```
 
 ---
 
-## 🧪 Validate & Test
+## ?? Validate & Test
 
 ### Plugin Validation
 
@@ -199,13 +199,13 @@ python scripts/test_server.py
 
 ---
 
-## 📜 License
+## ?? License
 
 MIT
 
 ---
 
 <p align="center">
-  <sub>Built for <a href="https://github.com/openai/codex">Codex</a> · Powered by MCP</sub>
+  <sub>Built for <a href="https://github.com/openai/codex">Codex</a> �� Powered by MCP</sub>
 </p>
 
