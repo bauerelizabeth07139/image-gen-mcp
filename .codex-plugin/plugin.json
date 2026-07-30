@@ -1,35 +1,43 @@
 {
-  "name": "image-gen-mcp",
-  "version": "0.3.1",
-  "description": "Expose image generation tools through an MCP server with configurable base URL and API key.",
-  "author": {
-    "name": "Local User"
-  },
-  "homepage": "https://example.com/image-gen-mcp",
-  "repository": "https://example.com/image-gen-mcp",
-  "license": "MIT",
-  "keywords": ["image-generation", "mcp", "plugins", "automation"],
-  "skills": "./skills/",
-  "mcpServers": "./.mcp.json",
-  "interface": {
-    "displayName": "Image Generation MCP",
-    "shortDescription": "Generate images via configured API",
-    "longDescription": "Use an MCP server to call an image generation endpoint using a configured base URL and API key, then return generated artifacts and status metadata.",
-    "developerName": "Local User",
-    "category": "Creative",
-    "capabilities": ["Interactive", "Read", "Write"],
-    "websiteURL": "https://example.com/image-gen-mcp",
-    "privacyPolicyURL": "https://example.com/privacy",
-    "termsOfServiceURL": "https://example.com/terms",
-    "defaultPrompt": ["Generate an image from a short prompt"],
-    "brandColor": "#111827",
-    "composerIcon": "./assets/composer-icon.png",
-    "logo": "./assets/logo.png",
-    "screenshots": []
-  }
+    "name":  "image-gen-mcp",
+    "version":  "0.4.0",
+    "description":  "Expose image generation tools through an MCP server with configurable base URL and API key.",
+    "author":  {
+                   "name":  "Local User"
+               },
+    "homepage":  "https://example.com/image-gen-mcp",
+    "repository":  "https://example.com/image-gen-mcp",
+    "license":  "MIT",
+    "keywords":  [
+                     "image-generation",
+                     "mcp",
+                     "plugins",
+                     "automation"
+                 ],
+    "skills":  "./skills/",
+    "mcpServers":  "./.mcp.json",
+    "interface":  {
+                      "displayName":  "Image Generation MCP",
+                      "shortDescription":  "Generate images via configured API",
+                      "longDescription":  "Use an MCP server to call an image generation endpoint using a configured base URL and API key, then return generated artifacts and status metadata.",
+                      "developerName":  "Local User",
+                      "category":  "Creative",
+                      "capabilities":  [
+                                           "Interactive",
+                                           "Read",
+                                           "Write"
+                                       ],
+                      "websiteURL":  "https://example.com/image-gen-mcp",
+                      "privacyPolicyURL":  "https://example.com/privacy",
+                      "termsOfServiceURL":  "https://example.com/terms",
+                      "defaultPrompt":  [
+                                            "Generate an image from a short prompt"
+                                        ],
+                      "brandColor":  "#111827",
+                      "composerIcon":  "./assets/composer-icon.png",
+                      "logo":  "./assets/logo.png",
+                      "screenshots":  [
+
+                                      ]
+                  }
 }
-
-
-
-
-
