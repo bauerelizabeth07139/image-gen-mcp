@@ -1,264 +1,164 @@
-<p align="center">
-  <img src="./assets/logo.svg" width="120" alt="Image Generation MCP"/>
-</p>
+# image-gen-mcp
 
-<h1 align="center">🎨 Image Generation MCP</h1>
+**Configurable, provider-agnostic image generation, as a DeepSeek Harness
+plugin.** Point it at any OpenAI-compatible `/v1/images/generations` endpoint
+and the model gains `image_generate` and `image_config_status` — plus a bundled
+skill that tells it when to use them.
 
-<p align="center">
-  <strong>Configurable · Provider-Agnostic · Drop-in MCP Server</strong><br/>
-  A Codex plugin that exposes image generation tools through MCP with configurable base URL and API key.
-</p>
+*A Codex plugin that exposes image generation tools through MCP with a
+configurable base URL and API key.*
 
-<p align="center">
-  <img src="https://img.shields.io/badge/Version-0.3.1-blue" alt="Version"/>
-  <img src="https://img.shields.io/badge/License-MIT-green" alt="License"/>
-  <img src="https://img.shields.io/badge/MCP-Server-orange" alt="MCP Server"/>
-  <img src="https://img.shields.io/badge/Platform-Codex-black" alt="Platform"/>
-</p>
+## Install
 
----
+**DeepSeek Harness Desktop** — open **Plugins** in the sidebar, choose **Add
+plugin**, and enter:
 
-## ✨ Features
-
-- 🔧 **Fully Configurable** — Set your own API endpoint and key via environment variables
-- 🔄 **Two Provider Modes** — `generic` for any compatible API, `openai` for OpenAI Images API
-- 🛠️ **Two Built-in Tools** — `image_generate` and `image_config_status`
-- 📦 **Drop-in Plugin** — Install from personal marketplace, works out of the box
-- 🎯 **Minimal Context** — Pure MCP tool layer, no planner/workflow overhead
-
----
-
-## 📖 What It Does
-
-Image Generation MCP is a **proxy server** that sits between Codex and any image generation API (OpenAI DALL-E, Stable Diffusion endpoints, custom APIs, etc.). When Codex needs to generate an image, it calls the MCP tools exposed by this plugin, which forwards the request to your configured backend.
-
-### Core Functionality
-
-| Function | Description |
-|----------|-------------|
-| **Image Generation** | Accepts a text prompt and returns a generated image (base64-encoded) via `image_generate` |
-| **Config Check** | Verifies that the API endpoint and key are properly configured via `image_config_status` |
-| **Provider Abstraction** | Translates requests between Codex's tool format and the upstream API format |
-| **Format Normalization** | In `openai` mode, automatically enforces correct OpenAI API parameters (model, n, response_format) |
-
-### How It Works
-
-1. Codex calls `image_generate` with a prompt and optional parameters
-2. The MCP server builds a payload based on the selected provider mode
-3. The request is forwarded to `${BASE_URL}/v1/images/generations`
-4. The response (image data or error) is returned to Codex
-
----
-
-## 🚀 Quick Start
-
-### 1. Install from Personal Marketplace
-
-```bash
-codex plugin add image-gen-mcp@personal
+```
+https://github.com/bauerelizabeth07139/image-gen-mcp
 ```
 
-### 2. Set Environment Variables
+Then switch the new **dsh-image-gen-mcp** bundle on, and give it a backend (see
+[Configuration](#configuration) — without a base URL and key the plugin
+deliberately mounts nothing and says so).
 
-```bash
-export IMAGE_GEN_BASE_URL="https://your-api-endpoint.com"
-export IMAGE_GEN_API_KEY="your-api-key"
-export IMAGE_GEN_PROVIDER="generic"         # or "openai"
-export IMAGE_GEN_DEFAULT_MODEL="dall-e-3"   # optional
-export IMAGE_GEN_TIMEOUT_MS="30000"         # optional
+**dsh CLI** — install it into the profile you actually boot:
+
+```sh
+dsh plugin --profile web add bauerelizabeth07139/image-gen-mcp
 ```
 
-### 3. Use It
+**No git on the machine?** pnpm resolves a git shorthand with `git ls-remote`,
+which fails with `'git' is not recognized` when git is missing. Use the tarball
+instead — that path is plain HTTPS:
 
-Once installed, the plugin exposes these MCP tools automatically:
+```sh
+dsh plugin --profile web add https://codeload.github.com/bauerelizabeth07139/image-gen-mcp/tar.gz/master
+```
 
-- `image_generate` — Generate an image from a text prompt
-- `image_config_status` — Check if base URL and API key are configured
+The same address works in the Desktop **Add plugin** dialog. Replace `master`
+with a commit SHA to pin an exact revision (`/tar.gz/<sha>`).
 
----
+Uninstall with `dsh plugin --profile web remove dsh-image-gen-mcp`.
 
-## ⚙️ Configuration
+## Requirements
 
-| Variable | Required | Default | Description |
-|----------|----------|---------|-------------|
-| `IMAGE_GEN_BASE_URL` | ✅ | — | Base URL of the image generation API |
-| `IMAGE_GEN_API_KEY` | ✅ | — | API key for authentication |
-| `IMAGE_GEN_PROVIDER` | | `generic` | `generic` or `openai` |
-| `IMAGE_GEN_DEFAULT_MODEL` | | `dall-e-3` | Default model ID |
-| `IMAGE_GEN_TIMEOUT_MS` | | `30000` | Request timeout in milliseconds |
+- **Node.js ≥ 22** — the harness itself; the server is plain Node with no npm
+  dependencies, so there is nothing to install.
+- **A backend**: a base URL that answers `POST {baseUrl}/v1/images/generations`
+  and an API key for it. The base URL must **not** include `/v1`.
 
----
+## Tools
 
-## 🔄 Provider Modes
+| Tool | What it does |
+|---|---|
+| `mcp__image_generation__image_generate` | Generates an image from a prompt. Parameters: `prompt` (required), `model`, `size`, `n`. |
+| `mcp__image_generation__image_config_status` | Reports whether the base URL and key are configured — ask this first when a generation fails for configuration reasons. |
 
-### `generic` (Default)
+## Bundled skill
 
-Forwards requests as-is to `${BASE_URL}/v1/images/generations` with your payload.
+`skills/image-generation/SKILL.md` is registered by the plugin, so the model
+knows the workflow: check `image_config_status`, generate with
+`image_generate`, return the artifact or an actionable error. It is adapted from
+the repository's original Codex skill — same workflow, harness tool names, plus
+a note about base64 payloads.
 
-**Use when:** Your API endpoint already follows the OpenAI-compatible format.
+## Configuration
 
-**Behavior:** Passes `model`, `prompt`, `size`, `n`, `response_format` directly to the upstream API without modification.
+| Key | Environment variable | Default | Meaning |
+|---|---|---|---|
+| `baseUrl` | `IMAGE_GEN_BASE_URL` | *(none — required)* | backend base URL, **without** `/v1` |
+| `apiKey` | `IMAGE_GEN_API_KEY` | *(none — required)* | credential for that backend |
+| `model` | `IMAGE_GEN_DEFAULT_MODEL` | *(empty)* | default model; the server picks `dall-e-3` in `openai` mode and `gpt-image-1` in `generic` mode when this is empty |
+| `provider` | `IMAGE_GEN_PROVIDER` | `generic` | `generic` (URL response) or `openai` (base64 response) |
+| `timeoutMs` | `IMAGE_GEN_TIMEOUT_MS` | `30000` | the server's own HTTP budget |
+| `toolCallTimeoutMs` | — | `120000` | DSH's per-call budget |
+| `env` | — | `{}` | raw environment passthrough |
 
-### `openai`
+Example loader row:
 
-Normalizes requests to the strict OpenAI Images API shape:
-- Forces `model` → `dall-e-3` (unless overridden)
-- Forces `n` → `1`
-- Forces `response_format` → `b64_json`
+```yaml
+- id: dsh-image-gen-mcp
+  name: 'dsh-image-gen-mcp'
+  config:
+    baseUrl: 'https://api.example.com'
+    apiKey: 'sk-...'
+    model: 'gpt-image-1'
+    provider: 'generic'
+```
 
-**Use when:** You're calling the real OpenAI API and need strict format compliance.
+The credential is forwarded explicitly: the harness scrubs credential-shaped
+variables (`KEY`, `TOKEN`, `SECRET`, `PASSWORD`) out of the environment a child
+would inherit, so an exported `IMAGE_GEN_API_KEY` is read at load time and
+written into the child's environment by the plugin.
 
-**Behavior:** Ignores user-supplied `n` and `response_format` to prevent API errors.
+## Why this plugin ships a bridge
 
----
+The server frames its stdio transport the LSP way — `Content-Length: <n>`
+followed by a blank line — while the MCP client inside DeepSeek Harness reads
+newline-delimited JSON. Mounted directly, the handshake would simply time out.
+`bridge.mjs` translates in both directions: NDJSON in from the harness,
+`Content-Length` frames to the server, and the reverse on the way back. Message
+bodies are reframed byte for byte, never re-parsed.
 
-## 🛠️ Tools Reference
+## How it is mounted
 
-### `image_generate`
+`index.js` registers the skill, then mounts `scripts/server.mjs` through the
+bridge over stdio with `failOnStartupError: true`. If `baseUrl` or `apiKey` is
+missing it logs a warning and mounts nothing — a server that exits at startup
+would otherwise fail the whole bundle load — while still registering the skill,
+so the model can tell the user exactly what to configure.
 
-Generate an image from a text prompt.
+## Development
+
+```sh
+npm test
+```
+
+Four suites, all Harness-free: the manifest and card metadata
+(`test/plugin.test.mjs`), the bridge's framing and round trip
+(`test/bridge.test.mjs`), the stdio mount and credential forwarding
+(`test/mount.test.mjs`), and the bundled skill's registration
+(`test/skill.test.mjs`). The repository's own Python validators still work:
+`python scripts/validate_plugin.py .`, `python scripts/test_server.py`,
+`python tests/test_provider_modes.py`.
+
+## Repository layout
+
+| Path | Purpose |
+|---|---|
+| `index.js` | the DSH plugin: skill provider + stdio mount |
+| `bridge.mjs` | NDJSON ↔ `Content-Length` translation |
+| `cordis.patch.yml` | the loader row that activates the plugin |
+| `skills/image-generation/` | the bundled skill, adapted from the original |
+| `locale/{en,zh}.json`, `assets/icon.svg` | card title, description and artwork |
+| `scripts/server.mjs` | the MCP server, unchanged |
+| `scripts/server.py`, `scripts/test_server.py` | the original Python HTTP debug server and its test, unchanged |
+| `scripts/validate_plugin.py`, `tests/` | the original Codex-plugin validators and tests, unchanged |
+| `.mcp.json`, `.codex-plugin/` | the original Codex plugin manifest, unchanged |
+| `README.opencode.md` | the repository's original README, verbatim |
+
+## Other hosts (unchanged)
 
 ```json
 {
-  "tool": "image_generate",
-  "args": {
-    "prompt": "a cat in space",
-    "size": "1024x1024",
-    "model": "dall-e-3"
+  "mcpServers": {
+    "image-generation": {
+      "command": "node",
+      "args": ["scripts/server.mjs"],
+      "env": {
+        "IMAGE_GEN_BASE_URL": "${IMAGE_GEN_BASE_URL}",
+        "IMAGE_GEN_API_KEY": "${IMAGE_GEN_API_KEY}"
+      }
+    }
   }
 }
 ```
 
-**Parameters:**
+Two caveats carried over from the original setup: the relative
+`scripts/server.mjs` needs the repository root as the working directory, and a
+host that frames with newline-delimited JSON (like DSH) needs the bridge:
+`node bridge.mjs -- node scripts/server.mjs`.
 
-| Parameter | Required | Default | Description |
-|-----------|----------|---------|-------------|
-| `prompt` | ✅ | — | Text description of the image to generate |
-| `size` | | `1024x1024` | Image dimensions (e.g., `256x256`, `512x512`, `1024x1024`) |
-| `model` | | `dall-e-3` | Model ID to use for generation |
-| `n` | | `1` | Number of images (generic mode only; forced to 1 in openai mode) |
-| `response_format` | | `b64_json` | Response format (generic mode only; forced to `b64_json` in openai mode) |
+## License
 
-**Returns:** Base64-encoded image data or actionable error.
-
-### `image_config_status`
-
-Check whether the required configuration is in place.
-
-```json
-{
-  "tool": "image_config_status",
-  "args": {}
-}
-```
-
-**Returns:**
-
-```json
-{
-  "ok": true,
-  "configuredBaseUrl": true,
-  "configuredApiKey": true,
-  "defaultModel": "dall-e-3",
-  "provider": "openai",
-  "missing": []
-}
-```
-
----
-
-## 🏗️ Architecture
-
-```
-┌─────────────────────────────────────────────┐
-│                  Codex                       │
-│                                             │
-│   User Prompt ──→ Image Generation Skill    │
-│                        │                    │
-│                        ▼                    │
-│               MCP Server (Node.js)          │
-│               scripts/server.mjs            │
-│                        │                    │
-│              ┌─────────┴─────────┐          │
-│              ▼                   ▼          │
-│       generic mode          openai mode     │
-│              │                   │          │
-│              └─────────┬─────────┘          │
-│                        ▼                    │
-│               ${BASE_URL}/v1/images/        │
-│                   generations               │
-└─────────────────────────────────────────────┘
-```
-
----
-
-## 📁 Structure
-
-```
-image-gen-mcp/
-├── .codex-plugin/
-│   └── plugin.json              # Plugin manifest (name, version, interface metadata)
-├── .mcp.json                    # MCP server config (tells Codex how to launch the server)
-├── assets/
-│   ├── composer-icon.png        # Composer UI icon
-│   ├── logo.png                 # Plugin logo (raster)
-│   └── logo.svg                 # Plugin logo (vector)
-├── skills/
-│   └── image-generation/
-│       ├── SKILL.md             # Skill instructions for Codex
-│       ├── agents/
-│       │   └── openai.yaml      # UI metadata (display name, icon, default prompt)
-│       └── assets/
-│           └── image-generation-small.svg
-├── scripts/
-│   ├── server.mjs               # Node.js MCP server (primary, used by .mcp.json)
-│   ├── server.py                # Python HTTP server (for testing/debugging)
-│   ├── test_server.py           # Smoke test (health, config, missing args, upstream)
-│   └── validate_plugin.py       # Plugin structure validator
-├── tests/
-│   └── test_provider_modes.py   # Provider mode regression tests (openai vs generic)
-├── LICENSE                      # MIT license
-└── README.md                    # This file
-```
-
----
-
-## 🧪 Validate & Test
-
-### Plugin Validation
-
-Checks that `plugin.json`, `.mcp.json`, and `SKILL.md` all exist and are valid:
-
-```bash
-python scripts/validate_plugin.py .
-```
-
-### Provider Mode Tests
-
-Spins up a fake upstream server and verifies that both provider modes produce the correct request payload:
-
-```bash
-python tests/test_provider_modes.py
-```
-
-### Smoke Test
-
-Starts the Python HTTP server and tests all endpoints (health, config status, missing prompt, upstream error):
-
-```bash
-python scripts/test_server.py
-```
-
-> **Note:** The smoke test auto-sets `IMAGE_GEN_BASE_URL` and `IMAGE_GEN_API_KEY` defaults if not already configured.
-
----
-
-## 📜 License
-
-MIT
-
----
-
-<p align="center">
-  <sub>Built for <a href="https://github.com/openai/codex">Codex</a> · Powered by MCP</sub>
-</p>
+[MIT](LICENSE) — the repository's own licence file, unchanged.

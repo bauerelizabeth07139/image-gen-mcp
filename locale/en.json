@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "Image Generation MCP",
+    "description": "Configurable, provider-agnostic image generation: mounts the bundled MCP server behind an NDJSON bridge, exposing mcp__image_generation__image_generate and mcp__image_generation__image_config_status, and registers the bundled image-generation skill."
+  }
+}

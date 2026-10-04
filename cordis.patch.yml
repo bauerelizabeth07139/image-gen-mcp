@@ -1,0 +1,21 @@
+# dsh-image-gen-mcp bundle patch — the loader row that activates the plugin.
+#
+#   id:   loader-row id, used for patch targeting/disable, must be unique
+#   name: the package specifier the loader imports. It must match this
+#         package's `name` in package.json character for character.
+#
+# The plugin reads its configuration defensively, so this row needs no
+# `config:` block. `baseUrl` and `apiKey` are required for the server to be
+# mounted at all; everything else is optional:
+#
+#   - insert:
+#       - id: dsh-image-gen-mcp
+#         name: 'dsh-image-gen-mcp'
+#         config:
+#           baseUrl: 'https://api.example.com'
+#           apiKey: 'sk-...'
+#           model: 'gpt-image-1'
+#           provider: 'generic'
+- insert:
+    - id: dsh-image-gen-mcp
+      name: 'dsh-image-gen-mcp'

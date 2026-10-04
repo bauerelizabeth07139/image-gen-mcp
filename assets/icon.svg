@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128" role="img" aria-label="image-gen-mcp — provider-agnostic image generation">
+  <title>image-gen-mcp — provider-agnostic image generation</title>
+  <rect width="128" height="128" rx="26" fill="#0b1220"/>
+  <rect x="22" y="26" width="84" height="76" rx="12" fill="#111c2e" stroke="#a78bfa" stroke-width="2.5"/>
+  <circle cx="46" cy="50" r="8" fill="#a78bfa"/>
+  <path d="M28 92l24-26 16 18 12-12 20 20z" fill="#4ade80" opacity="0.85"/>
+</svg>

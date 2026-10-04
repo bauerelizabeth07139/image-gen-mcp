@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "图片生成 MCP",
+    "description": "可配置、与供应商无关的图片生成:把随插件分发的 MCP 服务器挂在 NDJSON 桥后面,提供 mcp__image_generation__image_generate 与 mcp__image_generation__image_config_status,并注册 image-generation 技能。"
+  }
+}
