@@ -1,5 +1,7 @@
 # image-gen-mcp
 
+[![dsh.so risk](https://www.dsh.so/badge/image-gen-mcp.svg)](https://www.dsh.so/artifact/image-gen-mcp/)
+
 **Configurable, provider-agnostic image generation, as a DeepSeek Harness
 plugin.** Point it at any OpenAI-compatible `/v1/images/generations` endpoint
 and the model gains `image_generate` and `image_config_status` — plus a bundled
